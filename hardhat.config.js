@@ -1,6 +1,10 @@
 require("@nomicfoundation/hardhat-toolbox");
 // require("dotenv").config();
 require("@chainlink/env-enc").config();
+// require("./tasks/deploy-fundme");
+// require("./tasks/interact-fundme");
+// 在 tasks 目录下的 index.js 里集中导入任务，替换上面两行
+require("./tasks")
 const SEPOLIA_URL = process.env.SEPOLIA_URL;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;

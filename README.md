@@ -80,6 +80,26 @@ npx hardhat ignition deploy ./ignition/modules/Lock.js
 4. 使用命令行验证 npx hardhat verify --network sepolia 0xB0bAAba0e05825681B410C0fde0DE29ee2C3223E "120"，后面跟的是合约地址以及部署合约所用的参数。运行成功后能在etherscan上发现有代码已经上传
 5. 也可以在脚本里写代码进行验证,请看 deployFundMe.js 脚本
 6. npx hardhat run scripts/deployFundMe.js --network sepolia
+7. 验证的时候注意 etherscan 的延迟问题，解决办法是等待几个区块。
+   
 
 #### 合约交互脚本
 请看 deployFundMe.js
+合约交互的时候，两个账户众筹的资金存到了合约里，可以通过 getFund 在转到钱包里，保障测试代币重复利用。
+
+#### hardhat task ，以任务的形式去部署合约、交互合约
+1. 命令行中查看 task：npx hardhat help，会显示很多task（包括 run，compile，check，等）
+2. 新建文件夹 tasks
+3. 新建两个文件 deploy-fundme.js 和 interact-fundme.js
+4. 具体如何导出任务请看上面两个文件代码，最后需要在 hardhat.config.js 中添加任务文件 require("./tasks/deploy-fundme");
+5. 运行 npx hardhat help 就会发现任务 deploy-fundme 已经生成
+6. 运行任务 npx hardhat deploy-fundme --network sepolia
+7. fundMe 对象需要通过合约地址连接到已经部署的合约，请看 interact-fundme.js 代码
+8. 将 interact-fundme 引入到 hardhat.config.js 中
+9. 运行 npx hardhat help 检查是否含有任务 interact-fundme 
+10. 也可以使用 tasks 中新建 index.js 文件集中导入，然后在 hardhat.config.js 中只引入./tasks文件夹即可。
+11. 验证：
+    - npx hardhat deploy-fundme --network sepolia
+    - npx hardhat interact-fundme --addr 0x70761E2Bdfe9C3EaABeeEb0216972E9c99550D89 --network sepolia
+    - 上面命令 --addr 是传入合约地址
+    
