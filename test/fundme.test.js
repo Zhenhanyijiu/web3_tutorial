@@ -7,6 +7,7 @@ describe("test fundme contract", async function () {
     // 这里可以简化下面it函数里重复的部署代码
     beforeEach(async function () {
         // 意思是部署所有带有 all 标签的合约
+        // 使用我们写的deploy中01-deploy-fund-me.js脚本
         await deployments.fixture(["all"]);
         firstAccount = (await getNamedAccounts()).firstAccount;
         const fundMeDeployment = await deployments.get("FundMe")

@@ -120,4 +120,17 @@ hardhat 官网，请看插件 https://www.npmjs.com/package/hardhat-deploy
 4. 新建文件 01-deploy-fund-me.js, 01表示第一个被执行的
 5. 运行 npx hardhat deploy --tags frank，由于 frank 标签不存在，所以就不会部署
 6. npx hardhat deploy --tags all，all 标签存在，就会部署成功
-7. 
+7. 主要是在deply里面写一个部署脚本，在fundme.test.js里面使用，这样就不用在每个it函数里面写重复代码了
+
+### Mock 合约
+使用 Mock 合约，也就是使用模拟合约，请看[官方定义](https://ethereum.org/zh/developers/tutorials/how-to-mock-solidity-contracts-for-testing/)。
+
+比如在测试 fundMe 函数时，里面用到一个喂价功能，这个功能就给我们测试 fundMe 函数制造了困难，需要如下去做
+1. 在 contracts 目录中新建目录 mocks，并在 mocks 中新建文件 MockV3Aggregator.sol
+2. 给 Mock 合约也写一个部署脚本，请看 deploy/00-deploy-mock.js
+3. 将常量写到配置文件中，新建文件 helper-hardhat-config.js
+4. 验证 npx hardhat deploy --tags mock 是否部署了 mock 合约
+5. 在 01-deploy-fund-me.js 中需要判断是本地环境还是sepolia环境,请看代码
+6. npx hardhat deploy --network sepolia --reset [--reset 会重新部署]
+7. mock 第三方合约代码ok
+### FundMe 合约单元测试

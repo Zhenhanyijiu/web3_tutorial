@@ -30,12 +30,9 @@ contract FundMe {
     bool public getFundSuccess = false;
     address erc20Addr;
 
-    constructor(uint256 _locktimes) {
-        //                               0x694AA1769357215DE4FAC081bf1f309aDC325306
-        dataFeed = AggregatorV3Interface(
-            0x694AA1769357215DE4FAC081bf1f309aDC325306
-        );
-        // dataFeed = AggregatorV3Interface(0x1b44F3514812d835EB1BDB0acB33d3fA3351Ee43);
+    constructor(uint256 _locktimes, address dataFeedAddr) {
+        // 0x694AA1769357215DE4FAC081bf1f309aDC325306
+        dataFeed = AggregatorV3Interface(dataFeedAddr);
         owner = msg.sender; //记录发起人地址
         // 从合约部署时间算起到，加上锁定时间，这段时间就是众筹期
         locktime = block.timestamp + _locktimes; //记录
