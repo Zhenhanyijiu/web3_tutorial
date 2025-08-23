@@ -118,4 +118,6 @@ hardhat 官网，请看插件 https://www.npmjs.com/package/hardhat-deploy
 2. 在 hardhat.config.js 中添加 require('hardhat-deploy')，这样就可以在 npx hardhat help 命令中显示 deploy 了。
 3. 新建文件夹 deploy
 4. 新建文件 01-deploy-fund-me.js, 01表示第一个被执行的
-5. 运行 npx hardhat deploy
+5. 运行 npx hardhat deploy --tags frank，由于 frank 标签不存在，所以就不会部署
+6. npx hardhat deploy --tags all，all 标签存在，就会部署成功
+7. 

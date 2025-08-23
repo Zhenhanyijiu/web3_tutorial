@@ -33,3 +33,12 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     );
 
 }
+// tags 可以用来指定执行哪些脚本
+// 运行部署脚本的命令的时候加上 --tags fundme 或 --tags all，就可以运行这个脚本
+// 如果不加 --tags 参数，则会运行 deploy 目录下的所有脚本
+// 在fundme.test.js 里的 beforeEach 函数里可以添加 tags，这样测试前会先部署合约
+module.exports.tags = ["all", "fundme", "fundme01"];
+
+// 运行命令 npx hardhat deploy --tags fundme
+// 运行命令 npx hardhat deploy --tags all
+// 运行命令 npx hardhat deploy
