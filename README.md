@@ -102,4 +102,20 @@ npx hardhat ignition deploy ./ignition/modules/Lock.js
     - npx hardhat deploy-fundme --network sepolia
     - npx hardhat interact-fundme --addr 0x70761E2Bdfe9C3EaABeeEb0216972E9c99550D89 --network sepolia
     - 上面命令 --addr 是传入合约地址
-    
+
+## hardhat 开发框架: 合约测试
+### hardhat 测试介绍
+1. 浏览器中输入 mocha chai，mocha 是 js 的测试框架，chai 并不是测试框架，而是测试框架使用的一些功能，与 mocha 一起去使用。
+2. 安装这两个包使用 npx 命令。不过这里 “@nomicfoundation/hardhat-toolbox” 已经给安装好了这两个包。
+### 写第一个测试
+对 FundMe.sol 写测试用例
+1. 在 test 文件中新建 fundme.test.js，请看代码
+2. 指定文件测试  npx hardhat test ./test/fundme.test.js
+
+### hardhat deploy
+hardhat 官网，请看插件 https://www.npmjs.com/package/hardhat-deploy
+1. npm install -D hardhat-deploy，这里 -D 就是 --save-dev
+2. 在 hardhat.config.js 中添加 require('hardhat-deploy')，这样就可以在 npx hardhat help 命令中显示 deploy 了。
+3. 新建文件夹 deploy
+4. 新建文件 01-deploy-fund-me.js, 01表示第一个被执行的
+5. 运行 npx hardhat deploy

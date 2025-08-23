@@ -17,7 +17,7 @@ contract FundMe {
     mapping(address => uint256) private fundersToAmount;
     address[] private funders;
     // uint256[] private amount;
-    AggregatorV3Interface internal dataFeed;
+    AggregatorV3Interface public dataFeed;
     // uint256 constant ETH_PRICE = 335885000000;//3358*10**8
     // 为了方便测试这里假设一个以太币是1000美元
     // uint256 constant ETH_PRICE = 1000 * 10 ** 8; //3358*10**8
@@ -26,7 +26,7 @@ contract FundMe {
     uint256 locktime;
     //总的众筹金额最少100 USD
     uint256 constant TARGET = 100 * 10 ** 18;
-    address owner;
+    address public owner;
     bool public getFundSuccess = false;
     address erc20Addr;
 

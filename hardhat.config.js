@@ -5,6 +5,7 @@ require("@chainlink/env-enc").config();
 // require("./tasks/interact-fundme");
 // 在 tasks 目录下的 index.js 里集中导入任务，替换上面两行
 require("./tasks")
+require("hardhat-deploy");
 const SEPOLIA_URL = process.env.SEPOLIA_URL;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
@@ -34,5 +35,13 @@ module.exports = {
         //     // sepolia: "NRSKP3FCD3D1RTTUTTSH5J9WVEXXYCU9VJ"
         // }
         apiKey: ETHERSCAN_API_KEY,
+    },
+    namedAccounts: {
+        firstAccount: {
+            default: 0,//0表示数组 accounts 的第一个账户
+        },
+        secondAccount: {
+            default: 1//1表示数组 accounts的第二个账户
+        }
     }
 };
