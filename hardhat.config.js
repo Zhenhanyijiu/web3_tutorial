@@ -51,5 +51,13 @@ module.exports = {
         secondAccount: {
             default: 1//1表示数组 accounts的第二个账户
         }
+    },
+    gasReporter: {
+        enabled: true,
+        // currency: "USD",
+        // outputFile: "gas-report.txt",
+        // noColors: true,
+        // coinmarketcap: process.env.COINMARKETCAP_API_KEY,
+        // token: "ETH"
     }
 };

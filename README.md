@@ -149,3 +149,12 @@ hardhat 官网，请看插件 https://www.npmjs.com/package/hardhat-deploy
 5. 请看代码 fundme.staging.test.js
 6. 注意 mocha 的timeout值得设定，在hardhat.config.js 里
 7. 运行 npx hardhat test --network sepolia
+
+### gas-reporter 和 solidity coverage
+有一个工具来检测合约使用时 gas 消耗。另一个工具是代码测试覆盖率。
+1. npm install --save-dev hardhat-gas-reporter
+2. 安装之后，运行单元测试,会展示详细信息 Solidity and Network Configuration，方便优化 gas 消耗
+3. 在 hardhat.config.js 中可以配置 gasReporter。
+4. 单元测试覆盖率 npx hardhat coverage
+
+## 
