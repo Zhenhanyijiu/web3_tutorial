@@ -43,15 +43,9 @@ contract FundMe {
         // 目前每个人只能众筹一次
         require(fundersToAmount[msg.sender] == 0, "you have funded");
         // 限制众筹资金不能小于某个值，最少众筹10美元
-        require(
-            convertEthToUsd(msg.value) >= MINIMUM_VALUE,
-            "you must send more ETH than 100 usd"
-        );
+        require(convertEthToUsd(msg.value) >= MINIMUM_VALUE, "send more ETH");
         // 窗口关闭不能再众筹了
-        require(
-            block.timestamp <= locktime,
-            "fund windows has closed,you cant found"
-        );
+        require(block.timestamp <= locktime, "windows is closed");
         // 记录投资人的众筹资金并保存下来并能查看
         fundersToAmount[msg.sender] = msg.value;
         funders.push(msg.sender);
@@ -95,13 +89,13 @@ contract FundMe {
 
     // 提款,只有众筹到一定目标值的时候，发起人才能提款，只有owner才能提款
     function getFund() external {
-        require(msg.sender == owner, "not owner,can not getFund");
+        require(msg.sender == owner, "not the owner");
         // 窗口关闭才能提款
-        require(block.timestamp > locktime, "windows has not closed");
+        require(block.timestamp > locktime, "windows is not closed");
         // 如果没有达到目标值，说明这次众筹失败，不能提款
         require(
             convertEthToUsd(address(this).balance) >= TARGET,
-            "you cant get fund, it has not reach target"
+            "it has not reach target"
         );
         // payable (msg.sender).transfer(address(this).balance);
         // 将合约里的资金发送给提款人

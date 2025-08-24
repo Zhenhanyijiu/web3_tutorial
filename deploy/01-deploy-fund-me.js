@@ -29,13 +29,16 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     // 有个问题是如果有多个本地网络，如何判断?这样 if 语句就很复杂了
     // 可以在 heilper-hardhat.config.js 里设置一个数组，包含所有网络的名字
     let dataFeedAddr;
+    let confirm_num;
     if (deveplopmentChains.includes(network.name)) {
         // const mockDataFeed = await deployments.get("MockV3Aggregator")
         dataFeedAddr = (await deployments.get("MockV3Aggregator")).address
+        confirm_num = 0; // 本地网络不需要等待区块确认
 
     } else {
         // dataFeedAddr = "0x694AA1769357215DE4FAC081bf1f309aDC325306"
         dataFeedAddr = networkConfig[network.config.chainId].ethUsdDataFeed
+        confirm_num = CONFIRMATION_NUM;
     }
 
     // 部署 FundMe 合约
@@ -43,7 +46,8 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         from: firstAccount,
         args: [LockTime, dataFeedAddr], // 构造函数的参数，这里假设锁定时间是150秒
         // 就不需要 await fundMe.deploymentTransaction().wait(3);
-        waitConfirmations: CONFIRMATION_NUM, // 部署后等待区块确认数
+        // 如果是本地网络，CONFIRMATION_NUM 是0才行,否则会卡死
+        waitConfirmations: confirm_num, // 部署后等待区块确认数
         log: true,
     }
     );
