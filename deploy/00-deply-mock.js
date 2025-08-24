@@ -14,8 +14,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
             args: [DECIMALS, INITIAL_ANSWER],
             log: true,
         });
-    }
-    else {
+    } else {
         console.log("=== You are on a real network, no need to deploy mock");
     }
 }

@@ -17,7 +17,10 @@ const PRIVATE_KEY_1 = process.env.PRIVATE_KEY_1;
 module.exports = {
     solidity: "0.8.28",
     // 不写默认就是 hardhat
-    // defaultNetwork: "hardhat",
+    defaultNetwork: "hardhat",
+    mocha: {
+        timeout: 500000 // 500 seconds max for running tests
+    },
     networks: {
         sepolia: {
             // url 从第三方拿到，如 Infura 、Alchemy 、QuickNode 等

@@ -141,3 +141,11 @@ hardhat 官网，请看插件 https://www.npmjs.com/package/hardhat-deploy
 5. 看 fundme.test.js 单元测试代码
 
 ### FundMe 集成测试
+为了解决单元测试无法覆盖的功能，比如合约中用到的第三方服务的时候，单元测试使用的是 mock 合约，需要真实环境去测试
+1. 在 test 目录中新建目录 staging ，表示集成测试。
+2. 在 staging 目录中新建文件 fundme.staging.test.js
+3. 将 fundme.test.js 里的代码复制到 fundme.staging.test.js，并删除 it 测试用例
+4. 集成测试里主要去写一些单元测试里无法覆盖的场景，去掉 mock 合约的代码，进行集成测试
+5. 请看代码 fundme.staging.test.js
+6. 注意 mocha 的timeout值得设定，在hardhat.config.js 里
+7. 运行 npx hardhat test --network sepolia
