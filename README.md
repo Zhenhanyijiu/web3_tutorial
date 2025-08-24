@@ -136,4 +136,8 @@ hardhat 官网，请看插件 https://www.npmjs.com/package/hardhat-deploy
 ### FundMe 合约单元测试
 1. 在 test 目录中新建 unit 目录
 2. 将 fundme.test.js 移动到 unit 目录中
-3. 需要安装这个扩展 npm install --save-dev @nomicfoundation/hardhat-ethers ethers hardhat-deploy hardhat-deploy-ethers,之前的ether是hardhat提供的ether,功能可能比较局限. 如果出错可以加--force
+3. 需要安装这个扩展 npm install --save-dev @nomicfoundation/hardhat-ethers ethers hardhat-deploy hardhat-deploy-ethers,之前的ether是hardhat提供的ether,功能可能比较局限. 如果出错可以加--force，安装这些包是为了获取其他账户的fundMe合约
+4. npx hardhat test
+5. 看 fundme.test.js 单元测试代码
+
+### FundMe 集成测试

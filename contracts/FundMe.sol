@@ -29,6 +29,8 @@ contract FundMe {
     address public owner;
     bool public getFundSuccess = false;
     address erc20Addr;
+    event FundWithdrawByOwner(uint256);
+    event RefundByFunder(address, uint256);
 
     constructor(uint256 _locktimes, address dataFeedAddr) {
         // 0x694AA1769357215DE4FAC081bf1f309aDC325306
@@ -91,44 +93,44 @@ contract FundMe {
     function getFund() external {
         require(msg.sender == owner, "not the owner");
         // 窗口关闭才能提款
-        require(block.timestamp > locktime, "windows is not closed");
+        require(block.timestamp > locktime, "windows is open");
         // 如果没有达到目标值，说明这次众筹失败，不能提款
         require(
             convertEthToUsd(address(this).balance) >= TARGET,
             "it has not reach target"
         );
         // payable (msg.sender).transfer(address(this).balance);
+        uint256 balance2 = address(this).balance;
         // 将合约里的资金发送给提款人
-        (bool success, ) = payable(msg.sender).call{
-            value: address(this).balance
-        }("");
+        (bool success, ) = payable(msg.sender).call{value: balance2}("");
         // 保证交易成功
         require(success, "transfer tx failed");
         fundersToAmount[msg.sender] = 0;
         getFundSuccess = true; // flag
         // address(this).balance=0;
+        emit FundWithdrawByOwner(balance2);
     }
 
     // 退款，没有达到目标值，投资人可以退款
     function reFund() external {
         // 窗口关闭才能退
-        require(block.timestamp > locktime, "windows has not closed");
+        require(block.timestamp > locktime, "windows is open");
         // 只有众筹过的人才能退款，且只能退款一次
         require(
             fundersToAmount[msg.sender] != 0,
-            "you are not funder or have reFunded"
+            "The funder dont has balance to refund"
         );
         require(
             convertEthToUsd(address(this).balance) < TARGET,
-            "it has reached target,you cant reFound"
+            "it has reached target"
         );
+        uint256 balance1 = fundersToAmount[msg.sender];
         // 将合约里的资金退还给投资人
-        (bool suc, ) = payable(msg.sender).call{
-            value: fundersToAmount[msg.sender]
-        }("");
+        (bool suc, ) = payable(msg.sender).call{value: balance1}("");
         require(suc, "transfer tx failed");
         // 退还成功，并将记录置为 0
         fundersToAmount[msg.sender] = 0;
+        emit RefundByFunder(msg.sender, balance1);
     }
 
     function getChainlinkDataFeedLatestAnswer() public view returns (uint256) {

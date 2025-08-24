@@ -76,4 +76,78 @@ describe("test fundme contract", async function () {
         await expect(fundMeSecondAccount.getFund())
             .to.be.revertedWith("not the owner");
     });
+    it("owner, window open,balance>target, getFund failed", async function () {
+        // 先众筹一些钱进去
+        await fundMe.fundMe({ value: ethers.parseEther("0.1") });
+        // 预计会失败,因为窗口还开着
+        await expect(fundMe.getFund())
+            .to.be.revertedWith("windows is open");
+    });
+    it("owner, window closed,balance<target, getFund failed", async function () {
+        // 先众筹一些钱进去,但不够
+        await fundMe.fundMe({ value: ethers.parseEther("0.01") });
+        // 模拟时间流逝 160 秒,确保众筹窗口关闭
+        await helpers.time.increase(160);
+        // 通过挖矿来模拟时间流逝
+        await helpers.mine();
+        // 预计会失败,因为余额不够
+        await expect(fundMe.getFund())
+            .to.be.revertedWith("it has not reach target");
+    });
+    it("owner, window closed,balance>target, getFund success", async function () {
+        // 先众筹一些钱进去,确保余额够
+        await fundMe.fundMe({ value: ethers.parseEther("0.1") });
+        // 模拟时间流逝 160 秒,确保众筹窗口关闭
+        await helpers.time.increase(160);
+        // 通过挖矿来模拟时间流逝
+        await helpers.mine();
+        // 预计会成功
+        expect(await fundMe.getFund())
+            .to.emit(fundMe, "FundWithdrawByOwner").withArgs(ethers.parseEther("0.1"));
+    });
+    // unit test for reFund
+    // window closed,balance<target,funder has balance
+    it("window open,balance<target, funder has balance,reFund failed", async function () {
+        // 先众筹一些钱进去
+        await fundMe.fundMe({ value: ethers.parseEther("0.01") });
+        // 预计会失败,因为窗口还开着
+        await expect(fundMe.reFund())
+            .to.be.revertedWith("windows is open");
+    });
+
+    it("window closed,balance>target, funder has balance,reFund failed", async function () {
+        // 先众筹一些钱进去,确保余额达到目标值
+        await fundMe.fundMe({ value: ethers.parseEther("0.1") });
+        // 模拟时间流逝 160 秒,确保众筹窗口关闭
+        await helpers.time.increase(160);
+        // 通过挖矿来模拟时间流逝
+        await helpers.mine();
+        // 预计会失败,因为余额够了
+        await expect(fundMe.reFund())
+            .to.be.revertedWith("it has reached target");
+    });
+    it("window closed,balance<target, funder has no balance,reFund failed", async function () {
+        // 先众筹一些钱进去,确保余额未达到目标值
+        await fundMe.fundMe({ value: ethers.parseEther("0.01") });
+        // 模拟时间流逝 160 秒,确保众筹窗口关闭
+        await helpers.time.increase(160);
+        // 通过挖矿来模拟时间流逝
+        await helpers.mine();
+        // 换个账号来退款，确保这个账号没有众筹过
+        // 预计会失败,因为这个账号没有众筹过
+        await expect(fundMeSecondAccount.reFund())
+            .to.be.revertedWith("The funder dont has balance to refund");
+    });
+    it("window closed,balance<target, funder has balance,reFund success", async function () {
+        // 先众筹一些钱进去,确保余额未达到目标值
+        await fundMe.fundMe({ value: ethers.parseEther("0.01") });
+        // 模拟时间流逝 160 秒,确保众筹窗口关闭
+        await helpers.time.increase(160);
+        // 通过挖矿来模拟时间流逝
+        await helpers.mine();
+        // 预计会成功
+        expect(await fundMe.reFund())
+            .to.emit(fundMe, "RefundByFunder").withArgs(firstAccount, ethers.parseEther("0.01"));
+
+    });
 });
