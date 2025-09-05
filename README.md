@@ -30,6 +30,10 @@ npx hardhat ignition deploy ./ignition/modules/Lock.js
   -  然后就可以在线上调试合约了，说明代码是开源的，任何人都可以调试代码
   
 ## hardhat 环境
+### nvm 安装
+1. nvm工具的安装，这是一个管理nodejs版本的工具，类似conda工具来管理python版本
+Nvm 安装网址:https://github.com/nvm-sh/nvm
+2. 2.安装命令：curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 ### 创建 hardhat 项目
 1. mkdir web3_tutorial
 2. 安装 nodejs：nvm install 22.10.0
