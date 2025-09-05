@@ -35,7 +35,7 @@ npx hardhat ignition deploy ./ignition/modules/Lock.js
 2. 安装 nodejs：nvm install 22.10.0
 3. 创建 npm 项目：npm init
 4. 安装 hardhat ：npm install hardhat --save-dev 或 npm install hardhat@^2.22.2 --save-dev
-5. 创建 hardhat 项目：npx hardhat
+5. 创建 hardhat 项目：npx hardhat init
 ### 通过 hardhat 编译和部署合约 
 1. [npm cache clean --force]
 2. 安装 chainlink 包：npm install @chainlink/contracts --save-dev --registry=https://registry.npmmirror.com
@@ -157,4 +157,3 @@ hardhat 官网，请看插件 https://www.npmjs.com/package/hardhat-deploy
 3. 在 hardhat.config.js 中可以配置 gasReporter。
 4. 单元测试覆盖率 npx hardhat coverage
 
-## 
